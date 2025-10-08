@@ -1,7 +1,7 @@
-export default function Docs() {
-  return (
-    <div>
-      <h2>Hello, world!</h2>
-    </div>
+export default async function Docs() {
+  const { default: Post } = await import(
+    `@/markdown/getting-started/about.mdx`
   );
+
+  return <Post />;
 }
