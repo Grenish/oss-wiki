@@ -1,45 +1,94 @@
-# fumadocs-test
 
-This is a Next.js application generated with
-[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
+# OSS Wiki
 
-Run development server:
+OSS Wiki is an open-source, collaborative documentation platform built with Next.js and Fumadocs. It empowers communities to create, manage, and share high-quality technical documentation with ease. OSS Wiki is designed for open-source projects, teams, and knowledge bases that value transparency, contribution, and modern web standards.
+
+## Features
+
+- **Modern Documentation Engine:** Powered by [Next.js](https://nextjs.org/) and [Fumadocs](https://fumadocs.dev/), supporting fast, SEO-friendly, and interactive docs.
+- **MDX Support:** Write documentation in Markdown with React components for rich, dynamic content.
+- **Full-Text Search:** Built-in search API for instant, relevant results.
+- **Customizable Layouts:** Easily adapt the look and feel to your project's branding.
+- **Open Contribution Model:** Simple, transparent contribution workflow for all users.
+- **Type-Safe Content:** Uses [Zod](https://zod.dev/) schemas for frontmatter and metadata validation.
+
+## Project Structure
+
+- `app/` — Next.js app directory (routes, layouts, API, docs, etc.)
+- `lib/` — Shared logic, content source adapters, and layout utilities
+- `components/` — UI components and documentation widgets
+- `content/` — MDX documentation files
+- `source.config.ts` — Fumadocs/MDX configuration and schema definitions
+
+### Key Routes
+
+| Route                          | Description                                 |
+| ------------------------------ | ------------------------------------------- |
+| `/`                            | Home/Landing page                           |
+| `/docs`                        | Main documentation hub                      |
+| `/api/search`                  | Search API endpoint                         |
+| `/og/docs/[...slug]`           | Open Graph image generation for docs        |
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [bun](https://bun.sh/) (preferred), or [npm](https://www.npmjs.com/) / [yarn](https://yarnpkg.com/)
+
+### Installation
+
+Clone the repository:
 
 ```bash
-npm run dev
+git clone https://github.com/Grenish/oss-wiki.git
+cd oss-wiki
+```
+
+Install dependencies (using bun is recommended):
+
+```bash
+bun install
 # or
-pnpm dev
+npm install
+# or
+yarn install
+```
+
+### Running the Development Server
+
+```bash
+bun dev
+# or
+npm run dev
 # or
 yarn dev
 ```
 
-Open http://localhost:3000 with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to view the app.
 
-## Explore
+## Contribution Guide
 
-In the project, you can see:
+We welcome contributions of all kinds! Please see [CONTRIBUTIONS.md](./CONTRIBUTIONS.md) for detailed guidelines on how to get involved, report bugs, suggest features, and submit pull requests.
 
-- `lib/source.ts`: Code for content source adapter, [`loader()`](https://fumadocs.dev/docs/headless/source-api) provides the interface to access your content.
-- `lib/layout.shared.tsx`: Shared options for layouts, optional but preferred to keep.
+### Quick Contribution Steps
 
-| Route                     | Description                                            |
-| ------------------------- | ------------------------------------------------------ |
-| `app/(home)`              | The route group for your landing page and other pages. |
-| `app/docs`                | The documentation layout and pages.                    |
-| `app/api/search/route.ts` | The Route Handler for search.                          |
+1. Fork and clone the repository
+2. Create a new branch for your feature or fix
+3. Make your changes and commit with a descriptive message
+4. Push your branch and open a Pull Request
 
-### Fumadocs MDX
+## Configuration & Customization
 
-A `source.config.ts` config file has been included, you can customise different options like frontmatter schema.
+- **Content Source:** Edit `lib/source.ts` and `source.config.ts` to customize content loading and schema.
+- **Layouts:** Adjust layouts in `lib/layout.shared.tsx` and `app/docs/layout.tsx`.
+- **UI Components:** Update or add components in `components/` as needed.
+- **Styling:** Modify `app/global.css` and use [Tailwind CSS](https://tailwindcss.com/) for utility-first styling.
 
-Read the [Introduction](https://fumadocs.dev/docs/mdx) for further details.
+## License
 
-## Learn More
+OSS Wiki is [MIT licensed](./LICENSE).
 
-To learn more about Next.js and Fumadocs, take a look at the following
-resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Fumadocs](https://fumadocs.dev) - learn about Fumadocs
+Made with ❤️ by the OSS Wiki community.
