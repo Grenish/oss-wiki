@@ -1,6 +1,6 @@
 export default async function Docs() {
   const { default: Post } = await import(
-    `@/markdown/getting-started/about.mdx`
+    `@/markdown/about.mdx`
   );
 
   return <Post />;
