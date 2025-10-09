@@ -1,35 +1,16 @@
-import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "next-themes";
+import '@/app/global.css';
+import { RootProvider } from 'fumadocs-ui/provider/next';
+import { Inter } from 'next/font/google';
 
-const mont = Montserrat({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
+const inter = Inter({
+  subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: "Open Source Wiki",
-  description: "The Open source wiki for open source contributions.",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Layout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${mont.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <body className="flex flex-col min-h-screen">
+        <RootProvider>{children}</RootProvider>
       </body>
     </html>
   );
