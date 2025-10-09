@@ -1,0 +1,169 @@
+---
+title: Dos and Don'ts
+description: Best practices and common mistakes to avoid when contributing with Git and GitHub — including how to create high-effort, meaningful pull requests.
+---
+
+import { CheckCircle, XCircle } from "lucide-react";
+
+# Dos and Don’ts
+
+Contributing to open source isn’t just about pushing code — it’s about discipline, clarity, and professionalism.
+Your workflow reflects your respect for the project and the maintainers’ time.
+Below are essential **Dos** and **Don’ts** every developer should follow to maintain a clean, reliable, and respectful Git and GitHub workflow.
+
+---
+
+## <CheckCircle className="inline w-5 h-5 text-green-500 ml-1" /> Dos
+
+- **Use meaningful commit messages**
+  Always describe *why* you made a change, not just *what* changed.
+  Example:
+  ```bash
+  git commit -m "Refactor login handler to improve validation and error clarity"
+  ```
+
+* **Create feature branches**
+  Avoid committing directly to `main`. Instead, create dedicated branches for features or fixes.
+
+  ```bash
+  git checkout -b fix/update-doc-links
+  ```
+
+* **Pull before pushing**
+  Always pull the latest updates before pushing to prevent merge conflicts.
+
+  ```bash
+  git pull origin main
+  ```
+
+* **Keep commits atomic and focused**
+  Each commit should represent one logical change. Avoid mixing unrelated modifications.
+
+* **Review before committing**
+  Use `git diff` or your IDE’s VCS tools to review changes before committing. Small mistakes are easier to catch early.
+
+* **Write descriptive pull requests (PRs)**
+  A high-quality PR includes:
+
+  * A clear title summarizing the change.
+  * A detailed description explaining **what** and **why**.
+  * References to related issues (if any).
+  * Screenshots or test results (for UI or behavioral changes).
+    Example:
+
+  > ### Added improved error messages for login failures
+  >
+  > * Refactored error handler to display user-friendly messages.
+  > * Linked to Issue #42.
+  > * Tested across Chrome and Firefox.
+
+* **Use `.gitignore` properly**
+  Exclude environment files, system configurations, and build artifacts (e.g., `node_modules`, `.env`, `.idea`).
+
+* **Use rebase for clean history**
+  When your branch is behind main:
+
+  ```bash
+  git fetch origin
+  git rebase origin/main
+  ```
+
+  This keeps your commit history clean and linear.
+
+* **Be respectful during code reviews**
+  Reviews should focus on code quality, not personal criticism.
+  Use positive, professional language.
+
+---
+
+## <XCircle className="inline w-5 h-5 text-red-500 ml-1" /> Don’ts
+
+* **Don’t commit large binaries or generated files**
+  Repositories are for source code, not build outputs, media, or dependencies.
+
+* **Don’t push directly to main**
+  Always work through pull requests for transparency and review.
+
+* **Don’t commit sensitive data**
+  Never commit `.env` files, credentials, or access tokens. Once pushed, they’re exposed permanently.
+
+* **Don’t write vague commit messages**
+  Avoid generic messages like `update`, `fix`, or `changes`. They’re useless in debugging and reviewing.
+
+* **Don’t force push to shared branches**
+  It overwrites history and can cause data loss. Use `--force` only on your personal feature branches.
+
+* **Don’t ignore conflicts**
+  Resolve merge conflicts thoughtfully. Blindly accepting one side can overwrite critical work.
+
+* **Don’t spam PRs for minor or irrelevant edits**
+  Submitting dozens of PRs for typos or trivial spacing changes wastes maintainers’ time.
+
+* **Don’t skip testing**
+  Always test locally before submitting — especially if your changes impact functionality or UI.
+
+* **Don’t copy code without credit**
+  Respect open-source licenses. Always cite or credit the original authors when reusing code.
+
+---
+
+## Understanding Pull Request Effort Levels
+
+Not all PRs are equal — and that’s fine. What matters is **intent, effort, and professionalism**.
+Below is a distinction between **Good Effort PRs** and **Low Effort PRs**, so you understand what maintainers value.
+
+### Good Effort PR (High-Quality Contribution)
+
+A **Good Effort PR** demonstrates thought, testing, and clear communication.
+
+**Traits:**
+
+* Addresses a meaningful issue or adds clear value.
+* Includes a descriptive title and detailed explanation.
+* Contains **well-structured, clean code** or relevant documentation improvements.
+* Passes tests or includes test updates.
+* Uses proper commit conventions and branch naming.
+* Doesn’t break existing functionality.
+* Responds to review feedback respectfully and promptly.
+
+**Example:**
+
+> * Fixes broken navigation links and updates documentation structure.
+> * Adds context-aware navigation for `/docs` and `/tutorials`.
+> * Improves accessibility for mobile users.
+> * Linked to Issue #134.
+
+Such PRs save maintainers time, build trust, and often get merged quickly.
+
+---
+
+### Low Effort PR (Unprofessional Contribution)
+
+A **Low Effort PR** shows little consideration for maintainers, project standards, or actual value.
+
+**Traits:**
+
+* No description or unclear purpose.
+* Fixes a typo or changes whitespace without reason.
+* Includes unrelated or random edits (e.g., adding your name unnecessarily).
+* Commits generated files, build folders, or `.idea` configs.
+* Breaks the codebase or ignores linting rules.
+* Copies code without understanding or context.
+* Responds poorly to feedback (e.g., defensive or dismissive).
+
+**Example:**
+
+> * Added my name to README.
+> * Changed formatting of random file.
+> * Committed `.vscode/` folder accidentally.
+
+Such PRs are usually closed without merging and may harm your reputation as a contributor.
+
+---
+
+## Final Advice
+
+Professionalism in open source is about respect — for your time, for others’ time, and for the shared codebase.
+A well-crafted pull request is **not just code** — it’s communication, documentation, and collaboration combined.
+
+> Open source doesn’t just teach you how to code. It teaches you how to contribute responsibly.
