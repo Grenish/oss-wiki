@@ -1,8 +1,17 @@
 // @ts-nocheck -- skip type checking
-import * as docs_3 from "../content/docs/get-started/2-dos-and-dont.mdx?collection=docs&hash=1759984731582"
-import * as docs_2 from "../content/docs/get-started/1-git-and-github.mdx?collection=docs&hash=1759984731582"
-import * as docs_1 from "../content/docs/index.mdx?collection=docs&hash=1759984731582"
-import * as docs_0 from "../content/docs/credits.mdx?collection=docs&hash=1759984731582"
+import * as docs_12 from "../content/docs/get-started/9-code-reviews.mdx?collection=docs&hash=1760290551627"
+import * as docs_11 from "../content/docs/get-started/8-licenses.mdx?collection=docs&hash=1760290551627"
+import * as docs_10 from "../content/docs/get-started/7-merge-conflicts.mdx?collection=docs&hash=1760290551627"
+import * as docs_9 from "../content/docs/get-started/6-contribution-workflow.mdx?collection=docs&hash=1760290551627"
+import * as docs_8 from "../content/docs/get-started/5-commit-messages.mdx?collection=docs&hash=1760290551627"
+import * as docs_7 from "../content/docs/get-started/4-writing-good-prs.mdx?collection=docs&hash=1760290551627"
+import * as docs_6 from "../content/docs/get-started/3-branching-and-workflow.mdx?collection=docs&hash=1760290551627"
+import * as docs_5 from "../content/docs/get-started/2-dos-and-dont.mdx?collection=docs&hash=1760290551627"
+import * as docs_4 from "../content/docs/get-started/11-bonus.mdx?collection=docs&hash=1760290551627"
+import * as docs_3 from "../content/docs/get-started/10-maintaining-projects.mdx?collection=docs&hash=1760290551627"
+import * as docs_2 from "../content/docs/get-started/1-git-and-github.mdx?collection=docs&hash=1760290551627"
+import * as docs_1 from "../content/docs/index.mdx?collection=docs&hash=1760290551627"
+import * as docs_0 from "../content/docs/credits.mdx?collection=docs&hash=1760290551627"
 import { _runtime } from "fumadocs-mdx/runtime/next"
 import * as _source from "../source.config"
-export const docs = _runtime.docs<typeof _source.docs>([{ info: {"path":"credits.mdx","fullPath":"content/docs/credits.mdx"}, data: docs_0 }, { info: {"path":"index.mdx","fullPath":"content/docs/index.mdx"}, data: docs_1 }, { info: {"path":"get-started/1-git-and-github.mdx","fullPath":"content/docs/get-started/1-git-and-github.mdx"}, data: docs_2 }, { info: {"path":"get-started/2-dos-and-dont.mdx","fullPath":"content/docs/get-started/2-dos-and-dont.mdx"}, data: docs_3 }], [])
+export const docs = _runtime.docs<typeof _source.docs>([{ info: {"path":"credits.mdx","fullPath":"content/docs/credits.mdx"}, data: docs_0 }, { info: {"path":"index.mdx","fullPath":"content/docs/index.mdx"}, data: docs_1 }, { info: {"path":"get-started/1-git-and-github.mdx","fullPath":"content/docs/get-started/1-git-and-github.mdx"}, data: docs_2 }, { info: {"path":"get-started/10-maintaining-projects.mdx","fullPath":"content/docs/get-started/10-maintaining-projects.mdx"}, data: docs_3 }, { info: {"path":"get-started/11-bonus.mdx","fullPath":"content/docs/get-started/11-bonus.mdx"}, data: docs_4 }, { info: {"path":"get-started/2-dos-and-dont.mdx","fullPath":"content/docs/get-started/2-dos-and-dont.mdx"}, data: docs_5 }, { info: {"path":"get-started/3-branching-and-workflow.mdx","fullPath":"content/docs/get-started/3-branching-and-workflow.mdx"}, data: docs_6 }, { info: {"path":"get-started/4-writing-good-prs.mdx","fullPath":"content/docs/get-started/4-writing-good-prs.mdx"}, data: docs_7 }, { info: {"path":"get-started/5-commit-messages.mdx","fullPath":"content/docs/get-started/5-commit-messages.mdx"}, data: docs_8 }, { info: {"path":"get-started/6-contribution-workflow.mdx","fullPath":"content/docs/get-started/6-contribution-workflow.mdx"}, data: docs_9 }, { info: {"path":"get-started/7-merge-conflicts.mdx","fullPath":"content/docs/get-started/7-merge-conflicts.mdx"}, data: docs_10 }, { info: {"path":"get-started/8-licenses.mdx","fullPath":"content/docs/get-started/8-licenses.mdx"}, data: docs_11 }, { info: {"path":"get-started/9-code-reviews.mdx","fullPath":"content/docs/get-started/9-code-reviews.mdx"}, data: docs_12 }], [{"info":{"path":"get-started/meta.json","fullPath":"content/docs/get-started/meta.json"},"data":{"title":"Get Started","pages":["1-git-and-github","2-dos-and-dont","3-branching-and-workflow","4-writing-good-prs","5-commit-messages","6-contribution-workflow","7-merge-conflicts","8-licenses","9-code-reviews","10-maintaining-projects","11-bonus"],"defaultOpen":true,"icon":"Rocket"}}])
