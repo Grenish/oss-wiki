@@ -1,0 +1,137 @@
+---
+title: Writing Good Pull Requests
+description: Learn how to create meaningful, reviewable, and professional pull requests that make collaboration easier and increase your chances of merging successfully.
+---
+
+import { CircleCheck, CircleX } from "lucide-react"
+
+### Introduction
+
+A Pull Request (PR) is your proposal to merge code into a project’s main branch. A well-written PR communicates clearly, saves reviewers time, and shows respect for maintainers. Good PRs build trust — bad ones slow projects down.
+
+-----
+
+### Why Good PRs Matter
+
+  * **Maintainers can review and merge faster:** Clear and concise PRs allow maintainers to quickly understand the proposed changes and assess their impact, leading to a more efficient workflow.
+  * **Reduces misunderstandings and unnecessary back-and-forth:** A detailed description and clear context prevent confusion and reduce the need for clarifying questions.
+  * **Demonstrates professionalism and collaboration:** Submitting a high-quality PR shows that you value the project and the time of other contributors.
+  * **Increases your credibility as a contributor:** Consistently submitting good PRs establishes you as a reliable and professional collaborator.
+
+-----
+
+### Anatomy of a Good Pull Request
+
+#### 1\. **Descriptive Title**
+
+Your PR title should follow a consistent convention, like [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), to summarize what it does—not just “update” or “fix.”
+
+<CircleCheck className="inline h-4 w-4 text-green-500" /> `feat(auth): add password reset flow`
+
+<CircleCheck className="inline h-4 w-4 text-green-500" /> `fix(ui): align buttons in signup form`
+
+<CircleX className="inline h-4 w-4 text-red-500" /> `Update stuff`
+
+<CircleX className="inline h-4 w-4 text-red-500" /> `Fix bug`
+
+#### 2\. **Clear Description**
+
+Explain the *why*, *what*, and *how* of your changes. Use a template to ensure all necessary information is included.
+
+**Example Template:**
+
+```text
+### Summary
+Briefly explain what this PR does.
+
+### Motivation
+Why is this change necessary? What problem does it solve?
+
+### Changes Made
+- List of key changes or files modified
+
+### Testing
+How did you test this feature? (e.g., manual testing, unit tests, integration tests)
+
+### Related Issues
+Closes #
+```
+
+#### 3\. **Atomic, Focused Changes**
+
+Each PR should solve **one problem** or introduce **one feature**. This keeps the PR easy to review and prevents unrelated changes from being merged accidentally.
+
+<CircleCheck className="inline h-4 w-4 text-green-500" /> `Add dark mode toggle`
+
+<CircleX className="inline h-4 w-4 text-red-500" /> `Fix login bug + add theme switcher + update docs`
+
+#### 4\. **Small and Reviewable**
+
+Keep PRs **short and focused**. Large PRs are harder to review, slower to merge, and more likely to introduce bugs.
+
+**Tip:** Break large features into smaller, incremental PRs that build on one another.
+
+#### 5\. **Screenshots or Demos (if UI changes)**
+
+For any visual updates, include screenshots or short GIFs. This helps reviewers understand the impact without having to pull your branch locally.
+
+#### 6\. **Link Related Issues**
+
+Always link related issues using GitHub keywords (`Closes #42`, `Fixes #108`, `Related to #215`). This automatically updates the issue status when the PR is merged.
+
+#### 7\. **Follow Code Style and Project Conventions**
+
+Before pushing, ensure your code adheres to the project's style guide.
+
+  * Run any linting or formatting tools (`eslint`, `prettier`).
+  * Respect the project’s commit message rules (e.g., Conventional Commits).
+  * Maintain a meaningful commit history (avoid messages like `Update file`).
+
+-----
+
+### Low-Effort vs. Good-Effort PRs
+
+| Aspect | Low-Effort PR | Good-Effort PR |
+| :--- | :--- | :--- |
+| **Title** | "Update README" | `docs(readme): clarify setup instructions` |
+| **Description**| Empty or unclear | Includes summary, motivation, and test results |
+| **Changes**| Random, unrelated edits | Solves a specific issue or adds value |
+| **Communication**| No response to feedback | Actively engages in review |
+| **Documentation**| Missing or incorrect | Updates docs where necessary |
+
+-----
+
+### Review Etiquette
+
+#### As a Contributor
+
+  * Be patient — maintainers may review on their own time.
+  * Address review comments respectfully and with a positive attitude.
+  * Don’t argue; discuss with reasoning and evidence.
+  * Push updates as separate commits to make the review history transparent.
+
+#### As a Reviewer
+
+  * Focus on code, not the contributor.
+  * Be specific and constructive with your feedback.
+  * Acknowledge good work, not just mistakes.
+
+-----
+
+### Common Mistakes to Avoid
+
+<CircleX className="inline h-4 w-4 text-red-500" /> Opening PRs without testing.
+
+<CircleX className="inline h-4 w-4 text-red-500" /> Merging your own PR without review.
+
+<CircleX className="inline h-4 w-4 text-red-500" /> Adding unrelated commits.
+
+<CircleX className="inline h-4 w-4 text-red-500" /> Ignoring Continuous Integration (CI) or lint errors.
+
+<CircleX className="inline h-4 w-4 text-red-500" /> Leaving vague or empty descriptions.
+
+-----
+
+### Summary
+
+A great Pull Request is focused, clear, and well-tested. It has descriptive commits and messages, making it easy for maintainers to review and merge with confidence. Open source thrives on collaboration, and good PRs are the backbone of that collaboration.
