@@ -1,0 +1,133 @@
+---
+title: Open Source Contribution Workflow
+description: Step-by-step guide on how to contribute effectively to open source projects.
+---
+
+### Introduction
+
+Contributing to open source can seem intimidating at first, but following a clear workflow makes the process smooth and productive. This guide covers the standard, step-by-step process from finding a repository to submitting your changes, ensuring your contribution is easy for maintainers to review and merge.
+
+-----
+
+### 1\. Fork the Repository
+
+The first step is to create a personal copy of the project, called a **fork**. This allows you to work on the codebase without affecting the original project (also known as the "upstream" repository).
+
+  * Click the **"Fork"** button on the original repository's GitHub page.
+  * This creates a copy of the project under your personal GitHub account.
+  * Next, clone **your fork** to your local machine to start working.
+
+
+```bash
+# Clone your fork locally to your machine
+git clone https://github.com/your-username/repo-name.git
+
+# Navigate into the project directory
+cd repo-name
+```
+
+**Tip:** Add the original repository as an "upstream" remote to easily sync your fork with the latest changes.
+
+```bash
+git remote add upstream https://github.com/original-owner/repo-name.git
+```
+
+-----
+
+### 2\. Create a Branch
+
+It's a best practice to never work directly on the `main` or `master` branch. Instead, create a new, separate branch for each feature or fix you plan to work on.
+
+  * Name your branches descriptively to indicate the purpose of your changes.
+      * **Features:** `feature/add-user-profile`
+      * **Bug Fixes:** `fix/navbar-overlap`
+      * **Documentation:** `docs/update-readme`
+  * Use a short, focused branch name to make pull requests easier to review.
+
+
+```bash
+# Create and switch to a new branch for your changes
+git checkout -b feature/add-login
+```
+
+-----
+
+### 3\. Make Your Changes
+
+Once you're on your new branch, you can begin making your contributions.
+
+  * **Commit changes frequently:** Make small, atomic commits that focus on a single, logical change. This makes your work easy to follow.
+  * **Follow project conventions:** Adhere to the project’s code style, linter rules, and commit message conventions (often found in the `CONTRIBUTING.md` file).
+  * **Keep your changes atomic:** Each commit should be a self-contained unit of work. For example, don't mix a bug fix and a new feature in the same commit.
+
+-----
+
+### 4\. Sync with Upstream
+
+Before submitting your pull request, it's crucial to ensure your branch is up-to-date with the original repository. This helps you resolve any conflicts locally and keeps the project's history clean.
+
+```bash
+# Fetch the latest changes from the original repository
+git fetch upstream
+
+# Rebase your branch on top of the latest upstream/main
+git rebase upstream/main
+```
+
+Rebasing rewrites your commit history to appear as if you started with the latest code, which is cleaner than a merge.
+
+-----
+
+### 5\. Open a Pull Request (PR)
+
+A Pull Request is your proposal to merge your changes into the original project.
+
+  * **Push your branch to your fork:**
+    ```bash
+    git push origin feature/add-login
+    ```
+  * **Open the Pull Request:** On your GitHub fork's page, a button will appear to open a new PR.
+  * **Fill out the PR template:** A good PR description is key to a smooth review process. Be sure to include:
+      * **What changed:** A clear summary of your code changes.
+      * **Why it changed:** The motivation behind the change (e.g., "to fix a bug" or "to add a new feature").
+      * **Related issues:** Link to any relevant issues or discussions (e.g., `Closes #123`).
+      * **How you tested it:** Explain the steps you took to verify your changes work as expected.
+
+-----
+
+### 6\. Respond to Review Feedback
+
+After you open a PR, a maintainer will review your code. This is a collaborative process.
+
+  * **Be respectful and open to suggestions:** Review feedback is an opportunity to learn and improve.
+  * **Make required changes in your branch:** Once you make the changes, just push them to your branch, and they will automatically update in the PR.
+  * **Acknowledge and thank the reviewer:** A simple "Thanks for the feedback\!" can go a long way.
+
+-----
+
+### 7\. Merge and Clean Up
+
+Once your PR is approved, a maintainer will merge your changes.
+
+  * **Delete merged branches:** After the merge, it’s good practice to delete your local and remote branches to keep your workspace and the repository organized.
+    ```bash
+    # Delete the local branch
+    git branch -d feature/add-login
+
+    # Delete the remote branch on your fork
+    git push origin --delete feature/add-login
+    ```
+
+-----
+
+### 8\. Best Practices for Contributors
+
+  * **Start with `good first issue`:** If you're new to a project, these labeled issues are perfect for getting familiar with the codebase.
+  * **Read the `CONTRIBUTING.md` file:** This document is the ultimate guide to the project’s specific rules and expectations.
+  * **Test your changes thoroughly:** Don't rely on the project's automated tests alone. Test your changes locally to ensure they work as expected.
+  * **Communicate clearly:** Be active in the PR comments and on issues. Clear communication prevents misunderstandings.
+  * **Avoid submitting large, unfocused PRs:** Small, targeted PRs are much easier and faster to review.
+
+### Summary
+
+Following a structured workflow ensures your contributions are clean, reviewable, and easy to merge. It shows respect for the maintainers' time and helps you become a valuable member of the open-source community.
