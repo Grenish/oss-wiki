@@ -1,0 +1,162 @@
+---
+title: Commit Messages and Conventional Commits
+description: Learn how to write clear, consistent commit messages and follow the Conventional Commits standard to improve collaboration and automation in open source projects.
+---
+
+import { CircleCheck, CircleX } from "lucide-react"
+
+### Introduction
+
+Commit messages are the **journal of your project’s history**. They explain *what* changed and *why*, making it easier to track progress, debug issues, and review code later. Poorly written commits create confusion. Well-written ones tell a story.
+
+-----
+
+### Why Good Commit Messages Matter
+
+  * **Easier debugging and version tracking:** A clear history helps you quickly pinpoint when and where a bug was introduced.
+  * **Simpler code reviews and PR discussions:** Reviewers can understand your changes without having to read every line of code.
+  * **Enables changelog generation and semantic versioning:** Automated tools can use your commit messages to generate release notes and determine the next version number.
+  * **Communicates intent clearly:** Your teammates and maintainers instantly understand the purpose of your changes.
+
+-----
+
+### The Golden Rules of Commit Messages
+
+1.  **Use the imperative mood:** Write as if you're giving a command.
+
+      * <CircleCheck className="inline h-4 w-4 text-green-500" /> "Add login validation"
+      * <CircleX className="inline h-4 w-4 text-red-500" /> "Added login validation" or "Adding login validation"
+
+2.  **Keep it short and descriptive:** The subject line should be a brief summary of the change, ideally limited to **50 characters or less**.
+
+3.  **Capitalize the first letter** of the subject line.
+
+      * <CircleCheck className="inline h-4 w-4 text-green-500" /> "Fix navbar overflow"
+      * <CircleX className="inline h-4 w-4 text-red-500" /> "fix navbar overflow"
+
+4.  **Don't end with a period** in the subject line.
+
+      * <CircleCheck className="inline h-4 w-4 text-green-500" /> `Update dependencies`
+      * <CircleX className="inline h-4 w-4 text-red-500" /> `Update dependencies.`
+
+5.  **Explain why, not just what, in the body.** The subject line explains **what** changed, and the body provides the crucial **why** and **how**. This is essential for major updates.
+
+-----
+
+### Example of a Well-Structured Commit Message
+
+```text
+feat(auth): add password reset via email
+
+- Added new /forgot-password API endpoint
+- Integrated email verification and token validation
+- Updated UI for password reset flow
+
+Closes #42
+```
+
+-----
+
+### Understanding Conventional Commits
+
+Conventional Commits provide a standardized way to structure messages. This enables automation tools to generate changelogs, version bumps, and release notes automatically.
+
+#### **Format**
+
+```text
+<type>(optional scope): <description>
+```
+
+#### **Example**
+
+```bash
+git commit -m "fix(ui): align login button in header"
+```
+
+#### **Common Types**
+
+| Type | Description |
+| :--- | :--- |
+| **`feat`** | Introduces a new feature to the codebase. |
+| **`fix`** | Fixes a bug in the codebase. |
+| **`docs`** | Documentation changes only. |
+| **`style`** | Code style updates (no logic changes). |
+| **`refactor`**| A code restructuring or rewrite. |
+| **`test`** | Adds or updates tests. |
+| **`chore`** | Maintenance tasks like dependency updates. |
+| **`perf`** | Performance improvements. |
+| **`ci`** | Changes to CI/CD configuration files. |
+| **`build`** | Changes to the build system or external dependencies. |
+
+#### **Commit Message Structure Breakdown**
+
+```text
+feat(ui): add dark mode toggle
+
+Added a dark mode switch to the header.
+Improved accessibility by adjusting contrast ratios.
+
+BREAKING CHANGE: Theme settings are now user-specific.
+```
+
+  * **`feat(ui)`**: **Type** (`feat` for a new feature) and **optional scope** (`ui` for user interface).
+  * **`add dark mode toggle`**: A short, clear **description**.
+  * **Body**: The long-form explanation of the **reasoning** and **details** of the change.
+  * **`BREAKING CHANGE`**: A special footer that signals an incompatible API change. This is crucial for automated semantic versioning.
+
+-----
+
+### Using Tools for Better Commits
+
+You can use these tools to enforce the Conventional Commits standard and maintain consistency across your project.
+
+1.  **Commitizen:** An interactive CLI tool that prompts you to fill in all the required parts of a conventional commit.
+
+    ```bash
+    npm install -g commitizen
+    # Run interactive prompts with:
+    git cz
+    ```
+
+2.  **Commitlint:** A linter for your commit messages. It checks if your message follows the configured rules before the commit is finalized.
+
+    ```bash
+    npm install --save-dev @commitlint/{config-conventional,cli}
+    # Add this to commitlint.config.js
+    module.exports = { extends: ['@commitlint/config-conventional'] };
+    ```
+
+3.  **Husky:** A tool that lets you set up Git hooks, so you can automatically run **Commitlint** before every commit.
+
+    ```bash
+    npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
+    ```
+
+-----
+
+### Common Mistakes to Avoid
+
+  * <CircleX className="inline h-4 w-4 text-red-500" /> **Using vague messages:** Avoid `update`, `fix bug`, or `misc changes`.
+  * <CircleX className="inline h-4 w-4 text-red-500" /> **Bundling multiple unrelated changes** in one commit. Each commit should be a single, logical change.
+  * <CircleX className="inline h-4 w-4 text-red-500" /> **Skipping the body** for major updates or complex changes.
+  * <CircleX className="inline h-4 w-4 text-red-500" /> **Ignoring CI or linter errors** related to your commit message.
+
+-----
+
+### Good vs. Bad Examples
+
+| Bad Commit | Good Commit |
+| :--- | :--- |
+| `fix stuff` | `fix(auth): correct JWT expiration logic` |
+| `add files` | `feat(ui): add responsive layout for dashboard`|
+| `update` | `docs(readme): clarify setup instructions` |
+
+### Summary
+
+A strong commit message is:
+
+  * **Consistent:** It follows a clear, predictable pattern.
+  * **Descriptive:** It tells both what changed and why.
+  * **Actionable:** It makes history readable and enables automation.
+
+Writing good commits is a small effort with a big payoff—it turns your Git history into a reliable and searchable form of documentation.
