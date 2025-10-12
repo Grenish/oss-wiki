@@ -5,6 +5,7 @@ import {
   frontmatterSchema,
   metaSchema
 } from "fumadocs-mdx/config";
+import { remarkMdxMermaid } from "fumadocs-core/mdx-plugins";
 var docs = defineDocs({
   docs: {
     schema: frontmatterSchema,
@@ -18,7 +19,7 @@ var docs = defineDocs({
 });
 var source_config_default = defineConfig({
   mdxOptions: {
-    // MDX options
+    remarkPlugins: [remarkMdxMermaid]
   }
 });
 export {
