@@ -1,10 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
-  const router = useRouter();
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center relative p-4 text-center">
       <div>
@@ -19,15 +18,11 @@ export default function Home() {
         </p>
       </div>
       <div className="mt-5 space-x-4">
-        <Button
-          variant={"ghost"}
-          className="border"
-          onClick={() => {
-            router.push("/docs");
-          }}
-        >
-          About
-        </Button>
+        <Link href="/docs">
+          <Button variant={"ghost"} className="border">
+            About
+          </Button>
+        </Link>
         <Button variant={"secondary"}>Explore</Button>
       </div>
     </div>
