@@ -1,0 +1,18 @@
+{
+  "title": "Get Started",
+  "defaultOpen": true,
+  "icon": "Rocket",
+  "pages": [
+    "1-git-and-github",
+    "2-dos-and-dont",
+    "3-branching-and-workflow",
+    "4-writing-good-prs",
+    "5-commit-messages",
+    "6-contribution-workflow",
+    "7-merge-conflicts",
+    "8-licenses",
+    "9-code-reviews",
+    "10-maintaining-projects",
+    "11-bonus"
+  ]
+}
