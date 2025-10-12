@@ -1,0 +1,82 @@
+name: General Issue
+description: Use this template for reporting bugs, proposing enhancements, or improving documentation.
+title: "📝 Issue: "
+labels: []
+assignees: []
+
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Issue Title
+      description: Provide a short, clear title for the issue.
+      placeholder: e.g., Complete the [WIP] Code Reviews page
+    validations:
+      required: true
+
+  - type: input
+    id: files
+    attributes:
+      label: Affected File(s)
+      description: Specify any related files or directories.
+      placeholder: e.g., content/docs/get-started/9-code-reviews.mdx
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a detailed explanation of the issue. What’s missing, broken, or needs improvement?
+      placeholder: e.g., The file currently contains only placeholder text and lacks final content.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: Describe the ideal outcome once this issue is resolved.
+      placeholder: e.g., The page should contain a complete guide to code reviews, including best practices and workflow examples.
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Suggest actionable steps or ideas for fixing or completing this issue.
+      placeholder: |
+        - Write complete documentation content.
+        - Remove [WIP] tag once finalized.
+        - Include examples and review guidelines.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this issue?
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Issue Type
+      description: Select the type of issue.
+      options:
+        - Bug
+        - Enhancement
+        - Documentation
+        - Design
+        - Refactor
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Add any extra details, context, references, or links.
+      placeholder: e.g., This section is critical for contributor onboarding and maintaining review quality.
