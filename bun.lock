@@ -4,12 +4,14 @@
     "": {
       "name": "fumadocs-test",
       "dependencies": {
+        "@radix-ui/react-accordion": "^1.2.12",
         "@radix-ui/react-slot": "^1.2.3",
+        "@radix-ui/react-tabs": "^1.1.13",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
-        "fumadocs-core": "15.8.5",
+        "fumadocs-core": "^15.8.5",
         "fumadocs-mdx": "12.0.3",
-        "fumadocs-ui": "15.8.5",
+        "fumadocs-ui": "^15.8.5",
         "lucide-react": "^0.545.0",
         "mermaid": "^11.12.0",
         "next": "15.5.4",
