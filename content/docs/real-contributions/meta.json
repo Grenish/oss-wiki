@@ -1,0 +1,10 @@
+{
+  "title": "Real Contributions",
+  "defaultOpen": true,
+  "icon": "ChevronsLeftRightEllipsis",
+  "pages": [
+    "1-introduction",
+    "2-finding-projects.mdx",
+    "3-understanding-codebases.mdx"
+  ]
+}
