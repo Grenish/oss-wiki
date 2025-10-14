@@ -17,13 +17,23 @@ export default function Home() {
           entire community.
         </p>
       </div>
-      <div className="mt-5 space-x-4">
+      <div className="mt-8 flex flex-wrap gap-4 justify-center">
         <Link href="/docs">
-          <Button variant={"ghost"} className="border">
+          <Button
+            variant="outline"
+            size="lg"
+            className="text-foreground hover:bg-accent hover:text-accent-background"
+          >
             About
           </Button>
         </Link>
-        <Button variant={"secondary"}>Explore</Button>
+        <Button
+          variant="default"
+          size="lg"
+          className="bg-primary text-primary-foreground hover:bg-primary/90"
+        >
+          Explore
+        </Button>
       </div>
     </div>
   );
