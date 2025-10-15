@@ -1,5 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import { OssWikiLogo } from "@/components/logo";
+import Image from "next/image";
 
 /**
  * Shared layout configurations
@@ -13,7 +13,13 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <>
-          <OssWikiLogo width={30} height={30} className="mr-2" />
+          <Image
+            src="/oss-wiki-logo.png"
+            alt="OSS Wiki Logo"
+            width={50}
+            height={50}
+            className="mr-1"
+          />
           OSS Wiki
         </>
       ),
