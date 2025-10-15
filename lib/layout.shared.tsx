@@ -19,6 +19,7 @@ export function baseOptions(): BaseLayoutProps {
             width={50}
             height={50}
             className="mr-1"
+            priority
           />
           OSS Wiki
         </>
