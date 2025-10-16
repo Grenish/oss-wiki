@@ -1,5 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
-import { Brain } from "lucide-react";
+import Image from "next/image";
 
 /**
  * Shared layout configurations
@@ -13,7 +13,14 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <>
-          <Brain />
+          <Image
+            src="/oss-wiki-logo.png"
+            alt="OSS Wiki Logo"
+            width={50}
+            height={50}
+            className="mr-1"
+            priority
+          />
           OSS Wiki
         </>
       ),
