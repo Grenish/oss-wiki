@@ -1,0 +1,146 @@
+---
+title: "Community and Communication"
+description: "Learn how effective communication and community engagement strengthen collaboration, accelerate reviews, and build trust in open source projects."
+---
+
+# Community and Communication
+
+Open source thrives on collaboration. Strong communication is the foundation that keeps contributors aligned, reviews efficient, and the community welcoming.
+
+Effective communication accelerates **reviews and merges**, reduces misunderstandings, and builds **trust** between contributors and maintainers.
+
+> 💡 **Tip:** Communication is a skill—just like coding—and improving it helps you grow from a first-time contributor to a trusted maintainer.
+
+---
+
+## Why Community and Communication Matter
+
+- Encourages empathy, respect, and inclusiveness.  
+- Prevents duplicate work and reduces frustration.  
+- Speeds up code reviews and decision-making.  
+- Builds a strong, sustainable contributor network.
+
+---
+
+## How to Write an Effective Issue
+
+### ✅ When to Open an Issue
+
+Use **Issues** when:
+- You’ve found a reproducible bug.  
+- You’re proposing a specific feature or improvement.  
+- You want to track technical debt or refactoring tasks.
+
+Use **Discussions** when:
+- You’re exploring an idea or need clarification.  
+- You want to get community input before writing code.  
+
+---
+
+### 🧱 Recommended Issue Structure
+
+| Section | Purpose |
+|----------|----------|
+| **Title** | Be concise and descriptive (e.g., “Fix: crash in AuthHandler when token expires”). |
+| **Summary** | One-line overview of the issue’s context. |
+| **Steps to Reproduce** | Numbered list of actions that trigger the problem. |
+| **Expected vs Actual Behavior** | What should happen vs. what happens. |
+| **Environment** | OS, Node version, dependencies, etc. |
+| **Minimal Reproduction** | A small, self-contained example showing the bug. |
+| **Logs / Screenshots** | Provide clear evidence. |
+| **Impact / Priority** | Explain how it affects users or the project. |
+
+---
+
+### 💡 Examples
+
+**✅ Good Example**
+> **Title:** API client throws 500 when payload includes emojis  
+> **Steps:**  
+> 1. Send POST request with emoji in JSON body  
+> 2. Observe server error  
+> **Expected:** 200 OK  
+> **Actual:** 500 Internal Server Error  
+> **Environment:** Node 20.11, macOS 14  
+> **Logs:** `[Error: Unexpected token]`  
+> **Impact:** Blocks emoji-based messages in chat integration  
+
+**❌ Poor Example**
+> “App is broken. Please fix ASAP.”
+
+---
+
+### 🔍 Search-Before-Posting Checklist
+
+- [ ] Checked for duplicate issues or related discussions  
+- [ ] Confirmed on the latest `main` branch  
+- [ ] Verified reproducibility with minimal example  
+- [ ] Attached logs or screenshots  
+- [ ] Explained expected vs. actual behavior  
+
+---
+
+## Effective Communication with Maintainers
+
+### 💬 Before Opening an Issue or PR
+
+- Review existing documentation and **CONTRIBUTING.md**  
+- Ensure the problem or idea is clearly defined and reproducible  
+- Keep the scope focused—avoid mixing multiple issues in one PR  
+
+---
+
+### 🧭 During Review or Triage
+
+- Be **concise, respectful, and patient**  
+- Respond to feedback constructively  
+- Clarify misunderstandings politely  
+- Respect maintainers’ time; they often volunteer  
+
+> **Remember:** Reviews are a dialogue, not a debate.
+
+---
+
+### ⚖️ How to Escalate Appropriately
+
+If something feels stalled or unclear:
+- Comment once, summarizing the current status.  
+- Tag the relevant maintainer *only once* if needed.  
+- Use project Discussions or governance channels for broader questions.  
+
+---
+
+## Understanding Project Governance
+
+Every established open source project includes governance documents that outline contributor expectations, community behavior, and decision-making.
+
+| File | Purpose |
+|------|----------|
+| **`CONTRIBUTING.md`** | Explains how to contribute, structure PRs, and follow project conventions. |
+| **`CODE_OF_CONDUCT.md`** | Sets expectations for respectful behavior and details how to report violations. |
+| **Labels** | Classify issues (`good first issue`, `help wanted`, etc.). |
+| **CODEOWNERS** | Defines maintainers responsible for reviewing specific files or directories. |
+| **Governance models** | Describe decision processes (e.g., maintainer-led, voting-based). |
+
+> Respecting these rules builds trust and helps the community function smoothly.
+
+---
+
+## Quick Reference Checklist
+
+### 🐞 Before Opening an Issue
+- [ ] Verified it hasn’t been reported before  
+- [ ] Reproduced and documented clearly  
+- [ ] Provided minimal example and environment details  
+- [ ] Linked related issues or discussions  
+
+### 🧩 Before Submitting a PR
+- [ ] Linked issues in the PR description  
+- [ ] Followed project code style and commit message format  
+- [ ] Added tests and documentation updates if needed  
+- [ ] Responded to feedback politely and promptly  
+
+---
+
+> 💬 **Summary:**  
+> Communication isn’t just “nice to have”—it’s the backbone of every thriving open source project. Mastering it makes you an effective collaborator and valued community member.
