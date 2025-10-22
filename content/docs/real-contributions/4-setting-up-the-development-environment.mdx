@@ -1,0 +1,196 @@
+---
+title: Setting Up the Development Environment
+description: Learn how to clone, configure, and run open-source projects locally so you can start contributing effectively.
+---
+
+### Setting Up the Development Environment
+
+Now that you understand how to read and navigate a codebase, the next step is to **set up the project locally**.
+This allows you to run, test, and modify the code confidently — a critical part of making real, impactful contributions.
+
+Think of this as creating your own personal sandbox where you can safely experiment, debug, and build new features before sharing them with the open-source community.
+
+-----
+
+## Why Setting Up Locally Matters
+
+A proper local setup is the foundation for productive contribution.
+
+  * **Confidence in your changes:** You can verify that your code works before submitting it, preventing broken pull requests.
+  * **Deeper understanding:** Running the project helps you connect the dots between code and behavior.
+  * **Speed and autonomy:** You can test instantly, without waiting for maintainers or automated pipelines.
+
+-----
+
+## Forking and Cloning the Repository
+
+Before making any changes, you’ll need your own copy of the project. This ensures you can work independently without affecting the original repository.
+
+  * **1. Fork the repository:**
+Go to the project’s GitHub page and click the **“Fork”** button in the top-right corner.
+This creates a personal copy of the repository under your account.
+
+  * **2. Clone your fork locally:**
+Open your terminal and run:
+```bash
+git clone https://github.com/your-username/project-name.git
+```
+Replace `your-username` and `project-name` with your GitHub details.
+
+  * **3. Navigate into the project folder:**
+```bash
+cd project-name
+```
+
+  * **4. Add the original project as an upstream remote:**
+This allows you to pull the latest updates from the main repository.
+```bash
+git remote add upstream https://github.com/original-owner/project-name.git
+```
+You can check your remotes anytime by running:
+```bash
+git remote -v
+```
+
+-----
+
+## Installing Dependencies
+
+Most projects depend on external libraries or packages. These must be installed before the project can run.
+
+  * **Check the `README.md`:**
+Look for installation instructions or prerequisites.
+It may specify commands such as:
+```bash
+npm install
+# or
+yarn install
+# or
+pip install -r requirements.txt
+```
+
+  * **Common dependency managers:**
+- JavaScript / TypeScript → `npm` or `yarn`
+- Python → `pip` or `poetry`
+- Ruby → `bundler`
+- Go → `go mod tidy`
+- Java → `maven` or `gradle`
+
+  * **System-level dependencies:**
+Some projects also require databases, SDKs, or compilers.
+For example, a Node.js API might require:
+```bash
+brew install postgresql
+```
+Always review the project’s setup section carefully.
+
+-----
+
+## Configuring Environment Variables
+
+Many projects rely on environment variables for sensitive information such as API keys, database URLs, or service tokens.
+
+  * **Find a file named `.env.example`:**
+This acts as a template for your environment file.
+
+  * **Create your own `.env` file:**
+```bash
+cp .env.example .env
+```
+Then, fill in the appropriate values based on the project’s documentation.
+
+  * **Security tip:**
+Never commit your `.env` file.
+Add it to `.gitignore` if it’s not already listed to protect sensitive information.
+
+-----
+
+## Running the Project Locally
+
+With dependencies installed and configuration ready, you can now launch the project.
+
+  * **Start the development server:**
+```bash
+npm run dev
+# or
+python manage.py runserver
+# or
+yarn start
+```
+The command will vary depending on the technology stack.
+
+  * **Open the application:**
+Visit the local address shown in your terminal — typically:
+```text
+http://localhost:3000
+```
+If the project runs successfully, congratulations! 🎉 You’re now interacting with the same code that powers the live application.
+
+-----
+
+## Troubleshooting Common Issues
+
+It’s normal to hit a few bumps during setup — especially with large projects.
+Here are some steps to diagnose and resolve common problems:
+
+  * **Version mismatches:**
+Check that your language or runtime matches the version listed in the documentation:
+```bash
+node -v
+python --version
+java -version
+```
+
+  * **Missing dependencies:**
+If you see “module not found” or similar errors, re-run your install command or delete and reinstall dependencies:
+```bash
+rm -rf node_modules && npm install
+```
+
+  * **Database connection errors:**
+Make sure your database service is running and credentials in `.env` are correct.
+
+  * **Permission issues (macOS/Linux):**
+Try using `sudo` or fix file ownership issues:
+```bash
+sudo chown -R $USER:$USER .
+```
+
+  * **Still stuck?**
+- Search the **project’s Issues tab** — someone may have faced it before.
+- Check the **Discussions** or **README.md** troubleshooting section.
+- If you open a new issue, be clear and polite. Provide error messages and steps to reproduce.
+
+-----
+
+## Verifying Your Setup
+
+Before you start coding, confirm that your environment works correctly.
+
+  * **Run the tests:**
+```bash
+npm test
+# or
+pytest
+```
+If all tests pass, your setup is stable.
+
+  * **Lint or format the code:**
+```bash
+npm run lint
+```
+Ensures your changes will follow the project’s style and conventions.
+
+  * **Check your local changes:**
+Make a small edit and verify it reflects in your running app.
+This ensures your local workflow is connected and ready for contributions.
+
+-----
+
+## Summary
+
+Setting up the development environment is your first *hands-on* step in real open-source contribution.
+It transforms you from a reader to a contributor — someone capable of running, testing, and improving the project.
+
+Once your setup is working smoothly, you’re ready for the next stage:
+👉 **Identifying and Choosing Issues** — where you’ll learn how to pick meaningful tasks and start contributing code confidently.
