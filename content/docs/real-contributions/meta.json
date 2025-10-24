@@ -5,6 +5,7 @@
   "pages": [
     "1-introduction",
     "2-finding-projects.mdx",
-    "3-understanding-codebases.mdx"
+    "3-understanding-codebases.mdx",
+    "4-setting-up-the-development-environment.mdx"
   ]
 }
