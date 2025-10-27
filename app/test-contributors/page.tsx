@@ -16,6 +16,11 @@ export default function TestContributorsPage() {
         <h2 className="text-2xl font-semibold mb-4">Git and GitHub Page Contributors</h2>
         <ContributorTracker docPath="get-started/1-git-and-github.mdx" />
       </div>
+      
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4">Folder Index (no extension)</h2>
+        <ContributorTracker docPath="get-started" />
+      </div>
     </div>
   );
 }
