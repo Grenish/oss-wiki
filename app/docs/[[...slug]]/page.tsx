@@ -1,4 +1,5 @@
 import { ContributorTracker } from '@/components/contributor-tracker';
+import type { PageProps } from 'next';
 import { getPageImage, source } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
