@@ -25,6 +25,48 @@ function ghHeaders() {
   } as const;
 }
 
+// Get client IP from request
+function getClientIP(request: Request): string {
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) {
+    return xff.split(',')[0].trim();
+  }
+  return 'unknown';
+}
+
+// Simple in-memory rate limiter (for production, use Redis or Upstash)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+async function isRateLimited(ip: string): Promise<boolean> {
+  const RATE_LIMIT_PER_MINUTE = parseInt(process.env.GITHUB_RATE_LIMIT_PER_MINUTE || '10', 10);
+  const WINDOW_MS = 60 * 1000; // 1 minute window
+  const now = Date.now();
+  const windowStart = Math.floor(now / WINDOW_MS) * WINDOW_MS; // Start of current window
+  const key = `contributors:${ip}:${windowStart}`;
+  
+  const record = rateLimitStore.get(key);
+  
+  if (!record || record.resetTime < now) {
+    // Create new record
+    rateLimitStore.set(key, { count: 1, resetTime: windowStart + WINDOW_MS });
+    // Clean up old entries
+    for (const [k, v] of rateLimitStore.entries()) {
+      if (v.resetTime < now) {
+        rateLimitStore.delete(k);
+      }
+    }
+    return false;
+  }
+  
+  if (record.count >= RATE_LIMIT_PER_MINUTE) {
+    return true; // Rate limited
+  }
+  
+  // Increment count
+  record.count += 1;
+  return false;
+}
+
 // Get contributors for a specific file path
 async function getContributorsForFile(
   owner: string,
@@ -46,6 +88,10 @@ async function getContributorsForFile(
       const remaining = commitsRes.headers.get("x-ratelimit-remaining");
       if (commitsRes.status === 403 && remaining === "0") {
         throw new Error("GitHub API rate limit hit. Try again later.");
+      }
+      // If file not found, return empty array
+      if (commitsRes.status === 404) {
+        return [];
       }
       const body = await commitsRes.text().catch(() => "");
       throw new Error(`GitHub API ${commitsRes.status}: ${body || commitsRes.statusText}`);
@@ -89,12 +135,27 @@ async function getContributorsForFile(
     return contributors;
   } catch (error) {
     console.error("Error fetching contributors:", error);
-    return [];
+    throw error; // Re-throw to be handled by caller
   }
 }
 
 // GET handler for the API route
 export async function GET(request: Request) {
+  const clientIP = getClientIP(request);
+  
+  // Check rate limit
+  if (await isRateLimited(clientIP)) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded. Please try again later." },
+      { 
+        status: 429,
+        headers: {
+          "Retry-After": "60" // Retry after 1 minute
+        }
+      }
+    );
+  }
+  
   const { searchParams } = new URL(request.url);
   const docPath = searchParams.get('docPath');
   
@@ -109,17 +170,45 @@ export async function GET(request: Request) {
     );
   }
   
-  // Convert documentation path to file path
-  // Example: get-started/1-git-and-github -> content/docs/get-started/1-git-and-github.mdx
-  const filePath = docPath.endsWith('.mdx') ? 
-    `content/docs/${docPath}` : 
-    `content/docs/${docPath}.mdx`;
-  
   try {
-    const contributors = await getContributorsForFile(owner, repo, filePath);
-    return NextResponse.json(contributors);
-  } catch (error) {
+    // Try the first file path
+    const filePath1 = docPath.endsWith('.mdx') ? 
+      `content/docs/${docPath}` : 
+      `content/docs/${docPath}.mdx`;
+    
+    let contributors = await getContributorsForFile(owner, repo, filePath1);
+    
+    // If no contributors found, try the index file path
+    if (contributors.length === 0) {
+      const filePath2 = docPath.endsWith('.mdx') ? 
+        `content/docs/${docPath.replace(/\.mdx$/, '')}/index.mdx` : 
+        `content/docs/${docPath}/index.mdx`;
+      
+      contributors = await getContributorsForFile(owner, repo, filePath2);
+    }
+    
+    // Return contributors with CDN caching headers
+    return NextResponse.json(contributors, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=1800' // Cache for 1 hour, stale for 30 minutes
+      }
+    });
+  } catch (error: any) {
     console.error("API Error:", error);
+    
+    // Check if this is a GitHub rate limit error
+    if (
+      (error.status === 403) || 
+      (error.message && error.message.includes('rate limit')) ||
+      (error.message && error.message.includes('API rate limit exceeded'))
+    ) {
+      return NextResponse.json(
+        { error: "GitHub API rate limit exceeded. Please try again later." },
+        { status: 429 }
+      );
+    }
+    
+    // Return generic error for other failures
     return NextResponse.json(
       { error: "Failed to fetch contributors" },
       { status: 500 }
