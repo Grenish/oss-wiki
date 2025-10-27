@@ -89,7 +89,7 @@ async function getContributorsForFile(
     return contributors;
   } catch (error) {
     console.error("Error fetching contributors:", error);
-    return [];
+    throw error;
   }
 }
 
