@@ -100,7 +100,7 @@ async function getContributorsForFile(
     const commitsData = await commitsRes.json();
     
     // Process commits to extract unique contributors
-    const contributorMap = new Map<string, Contributor>();
+    const contributorMap = new Map<number, Contributor>();
     
     for (const commit of commitsData) {
       const author = commit.author;
@@ -135,7 +135,7 @@ async function getContributorsForFile(
     return contributors;
   } catch (error) {
     console.error("Error fetching contributors:", error);
-    throw error; // Re-throw to be handled by caller
+    throw error;
   }
 }
 

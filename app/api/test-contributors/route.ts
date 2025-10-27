@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export function GET() {
   // Simple test response
   return NextResponse.json({
     message: "Contributor API is working!",
