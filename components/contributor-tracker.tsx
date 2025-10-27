@@ -27,27 +27,35 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const ac = new AbortController();
+    let cancelled = false;
     async function fetchContributors() {
       try {
         setLoading(true);
-        const response = await fetch(`/api/contributors?docPath=${encodeURIComponent(docPath)}`);
+        const response = await fetch(
+          `/api/contributors?docPath=${encodeURIComponent(docPath)}`,
+          { signal: ac.signal }
+        );
         
         if (!response.ok) {
           throw new Error('Failed to fetch contributors');
         }
         
         const data = await response.json();
-        setContributors(data);
+        if (!cancelled) setContributors(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        if (!cancelled && !(err instanceof DOMException && err.name === 'AbortError')) {
+          setError(err instanceof Error ? err.message : 'An error occurred');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
 
     if (docPath) {
       fetchContributors();
     }
+    return () => { cancelled = true; ac.abort(); };
   }, [docPath]);
 
   if (loading) {
