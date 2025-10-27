@@ -1,14 +1,15 @@
+import { ContributorTracker } from '@/components/contributor-tracker';
 import { getPageImage, source } from '@/lib/source';
-import {
-  DocsBody,
-  DocsDescription,
-  DocsPage,
-  DocsTitle,
-} from 'fumadocs-ui/page';
-import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
-import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
+import {
+    DocsBody,
+    DocsDescription,
+    DocsPage,
+    DocsTitle,
+} from 'fumadocs-ui/page';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params;
@@ -16,6 +17,8 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   if (!page) notFound();
 
   const MDX = page.data.body;
+  // Create the document path for the contributor tracker
+  const docPath = params.slug && params.slug.length > 0 ? params.slug.join('/') : 'index.mdx';
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
@@ -26,6 +29,12 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
           components={getMDXComponents({
             // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
+            // Pass the document path to the ContributorTracker
+            ContributorTracker: ({ docPath: customDocPath }: { docPath: string }) => {
+              // Use the custom path if provided, otherwise use the current page path
+              const path = customDocPath || docPath;
+              return <ContributorTracker docPath={path} />;
+            }
           })}
         />
       </DocsBody>
