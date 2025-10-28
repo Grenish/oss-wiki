@@ -68,8 +68,10 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
           setContributors(data);
         }
       } catch (err) {
-        if (!cancelled && err.name !== 'AbortError') {
-          setError(err instanceof Error ? err.message : 'An error occurred');
+        // Type guard for error
+        const error = err as Error;
+        if (!cancelled && (error.name !== 'AbortError')) {
+          setError(error instanceof Error ? error.message : 'An error occurred');
         }
       } finally {
         if (!cancelled) {
