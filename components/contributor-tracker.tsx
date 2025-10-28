@@ -38,7 +38,14 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
         );
         
         if (!response.ok) {
-          throw new Error('Failed to fetch contributors');
+          let msg = 'Failed to fetch contributors';
+          const retry = response.headers.get('Retry-After');
+          try {
+            const body = await response.json();
+            if (typeof body?.error === 'string') msg = body.error;
+          } catch {}
+          if (retry) msg += ` (retry after ${retry}s)`;
+          throw new Error(msg);
         }
         
         const data = await response.json();
