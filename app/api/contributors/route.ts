@@ -27,17 +27,68 @@ function ghHeaders() {
 
 // Get client IP from request
 function getClientIP(request: Request): string {
-  const xff = request.headers.get('x-forwarded-for');
-  if (xff) {
-    return xff.split(',')[0].trim();
+  const headers = request.headers;
+  
+  // List of headers to check in order of preference
+  const headerNames = [
+    'x-forwarded-for',
+    'x-client-ip',
+    'x-real-ip',
+    'cf-connecting-ip',
+    'true-client-ip',
+    'fastly-client-ip'
+  ];
+  
+  for (const headerName of headerNames) {
+    const headerValue = headers.get(headerName);
+    if (headerValue) {
+      let ip = headerValue.trim();
+      
+      // For x-forwarded-for, take the first IP in the comma-separated list
+      if (headerName === 'x-forwarded-for' && ip.includes(',')) {
+        ip = ip.split(',')[0].trim();
+      }
+      
+      // Basic validation for IPv4 or IPv6 format
+      if (ip && (isValidIPv4(ip) || isValidIPv6(ip))) {
+        return ip;
+      }
+    }
   }
+  
   return 'unknown';
 }
+
+// Basic IPv4 validation
+function isValidIPv4(ip: string): boolean {
+  const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  if (!ipv4Regex.test(ip)) return false;
+  
+  // Check that each octet is between 0 and 255
+  const octets = ip.split('.');
+  return octets.every(octet => {
+    const num = parseInt(octet, 10);
+    return num >= 0 && num <= 255;
+  });
+}
+
+// Basic IPv6 validation
+function isValidIPv6(ip: string): boolean {
+  // Very basic IPv6 validation - checks for presence of colons
+  // and that it doesn't look like an IPv4 address
+  return ip.includes(':') && !ip.includes('.') && ip.length > 2;
+}
+
+// Rate limiter return type
+type RateLimitResult = {
+  limited: boolean;
+  retryAfterSeconds: number;
+};
 
 // Simple in-memory rate limiter (for production, use Redis or Upstash)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
-async function isRateLimited(ip: string): Promise<boolean> {
+async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   const RATE_LIMIT_PER_MINUTE = parseInt(process.env.GITHUB_RATE_LIMIT_PER_MINUTE || '10', 10);
   const WINDOW_MS = 60 * 1000; // 1 minute window
   const now = Date.now();
@@ -45,26 +96,28 @@ async function isRateLimited(ip: string): Promise<boolean> {
   const key = `contributors:${ip}:${windowStart}`;
   
   const record = rateLimitStore.get(key);
+  const resetTime = windowStart + WINDOW_MS;
+  const remainingSeconds = Math.max(0, Math.ceil((resetTime - now) / 1000));
   
   if (!record || record.resetTime < now) {
     // Create new record
-    rateLimitStore.set(key, { count: 1, resetTime: windowStart + WINDOW_MS });
+    rateLimitStore.set(key, { count: 1, resetTime });
     // Clean up old entries
     for (const [k, v] of rateLimitStore.entries()) {
       if (v.resetTime < now) {
         rateLimitStore.delete(k);
       }
     }
-    return false;
+    return { limited: false, retryAfterSeconds: remainingSeconds };
   }
   
   if (record.count >= RATE_LIMIT_PER_MINUTE) {
-    return true; // Rate limited
+    return { limited: true, retryAfterSeconds: remainingSeconds }; // Rate limited
   }
   
   // Increment count
   record.count += 1;
-  return false;
+  return { limited: false, retryAfterSeconds: remainingSeconds };
 }
 
 // Get contributors for a specific file path
@@ -154,13 +207,14 @@ export async function GET(request: Request) {
   const clientIP = getClientIP(request);
   
   // Check rate limit
-  if (await isRateLimited(clientIP)) {
+  const rateLimitResult = await checkRateLimit(clientIP);
+  if (rateLimitResult.limited) {
     return NextResponse.json(
       { error: "Rate limit exceeded. Please try again later." },
       { 
         status: 429,
         headers: {
-          "Retry-After": "60" // Retry after 1 minute
+          "Retry-After": rateLimitResult.retryAfterSeconds.toString()
         }
       }
     );
@@ -200,7 +254,8 @@ export async function GET(request: Request) {
     // Return contributors with CDN caching headers
     return NextResponse.json(contributors, {
       headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=1800' // Cache for 1 hour, stale for 30 minutes
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=1800', // Cache for 1 hour, stale for 30 minutes
+        "Retry-After": rateLimitResult.retryAfterSeconds.toString()
       }
     });
   } catch (error: any) {

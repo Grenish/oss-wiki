@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 import { Calendar, GitCommit } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -27,35 +27,57 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const ac = new AbortController();
+    // Create an abort controller for cleanup
+    const controller = new AbortController();
     let cancelled = false;
+    
+    // If no docPath, immediately set loading to false and clear contributors
+    if (!docPath) {
+      if (!cancelled) {
+        setContributors([]);
+        setLoading(false);
+        setError(null);
+      }
+      return () => {
+        cancelled = true;
+        controller.abort();
+      };
+    }
+
     async function fetchContributors() {
       try {
         setLoading(true);
-        const response = await fetch(
-          `/api/contributors?docPath=${encodeURIComponent(docPath)}`,
-          { signal: ac.signal }
-        );
+        setError(null);
+        
+        const response = await fetch(`/api/contributors?docPath=${encodeURIComponent(docPath)}`, {
+          signal: controller.signal
+        });
         
         if (!response.ok) {
           throw new Error('Failed to fetch contributors');
         }
         
         const data = await response.json();
-        if (!cancelled) setContributors(data);
+        if (!cancelled) {
+          setContributors(data);
+        }
       } catch (err) {
-        if (!cancelled && !(err instanceof DOMException && err.name === 'AbortError')) {
+        if (!cancelled && err.name !== 'AbortError') {
           setError(err instanceof Error ? err.message : 'An error occurred');
         }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
-    if (docPath) {
-      fetchContributors();
-    }
-    return () => { cancelled = true; ac.abort(); };
+    fetchContributors();
+    
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [docPath]);
 
   if (loading) {
