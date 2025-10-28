@@ -1,3 +1,4 @@
+import { isIP } from 'net';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -72,9 +73,8 @@ function isValidIPv4(ip: string): boolean {
 
 // Basic IPv6 validation
 function isValidIPv6(ip: string): boolean {
-  // Very basic IPv6 validation - checks for presence of colons
-  // and that it doesn't look like an IPv4 address
-  return ip.includes(':') && !ip.includes('.') && ip.length > 2;
+  // Use Node's built-in IP validation
+  return isIP(ip) === 6;
 }
 
 // Rate limiter return type
