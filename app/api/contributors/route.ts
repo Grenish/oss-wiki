@@ -141,6 +141,16 @@ async function getContributorsForFile(
 
 // GET handler for the API route
 export async function GET(request: Request) {
+  // Check if GitHub token is configured
+  if (!process.env.GITHUB_TOKEN) {
+    console.warn("GITHUB_TOKEN not configured, returning empty contributors list");
+    return NextResponse.json([], {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=1800'
+      }
+    });
+  }
+  
   const clientIP = getClientIP(request);
   
   // Check rate limit
