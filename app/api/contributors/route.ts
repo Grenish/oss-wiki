@@ -216,7 +216,7 @@ async function getContributorsForFile(
           // Add new contributor
           seenLogins.add(login);
           contributorMap.set(login, {
-            id: author.id ? parseInt(author.id) : Math.floor(Math.random() * 1000000),
+            id: author.id ? author.id : Math.floor(Math.random() * 1000000),
             login: author.login,
             avatar_url: author.avatarUrl || `https://github.com/${author.login}.png`,
             html_url: author.url || `https://github.com/${author.login}`,
