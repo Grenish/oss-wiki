@@ -11,7 +11,6 @@ type Contributor = {
   login: string;
   avatar_url: string;
   html_url: string;
-  type: string;
   contributions: number;
   last_commit_date?: string;
 };
@@ -54,7 +53,14 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
         });
         
         if (!response.ok) {
-          throw new Error('Failed to fetch contributors');
+          let msg = 'Failed to fetch contributors';
+          const retry = response.headers.get('Retry-After');
+          try {
+            const body = await response.json();
+            if (typeof body?.error === 'string') msg = body.error;
+          } catch {}
+          if (retry) msg += ` (retry after ${retry}s)`;
+          throw new Error(msg);
         }
         
         const data = await response.json();
@@ -158,10 +164,17 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
                       <span className="mx-1">•</span>
                       <Calendar className="h-3 w-3" />
                       <span>
-                        {new Date(contributor.last_commit_date).toLocaleDateString(undefined, {
-                          month: 'short',
-                          day: 'numeric'
-                        })}
+                      <span>
+                        {(() => {
+                          const date = new Date(contributor.last_commit_date);
+                          return isNaN(date.getTime()) 
+                            ? 'Invalid date' 
+                            : date.toLocaleDateString(undefined, {
+                                month: 'short',
+                                day: 'numeric'
+                              });
+                        })()}
+                      </span>
                       </span>
                     </>
                   )}
