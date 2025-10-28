@@ -164,7 +164,6 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
                       <span className="mx-1">•</span>
                       <Calendar className="h-3 w-3" />
                       <span>
-                      <span>
                         {(() => {
                           const date = new Date(contributor.last_commit_date);
                           return isNaN(date.getTime()) 
@@ -174,7 +173,6 @@ export function ContributorTracker({ docPath, className }: ContributorTrackerPro
                                 day: 'numeric'
                               });
                         })()}
-                      </span>
                       </span>
                     </>
                   )}
