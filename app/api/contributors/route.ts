@@ -7,7 +7,6 @@ const ContributorSchema = z.object({
   login: z.string(),
   avatar_url: z.string().url(),
   html_url: z.string().url(),
-  type: z.string(),
   contributions: z.number(),
   last_commit_date: z.string().optional(),
 });
@@ -18,8 +17,7 @@ type Contributor = z.infer<typeof ContributorSchema>;
 function ghHeaders() {
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
   return {
-    Accept: "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28",
+    Accept: "application/vnd.github.v4+json",
     "User-Agent": "oss-wiki-app",
     ...(GITHUB_TOKEN ? { Authorization: `Bearer ${GITHUB_TOKEN}` } : {}),
   } as const;
@@ -120,64 +118,122 @@ async function checkRateLimit(ip: string): Promise<RateLimitResult> {
   return { limited: false, retryAfterSeconds: remainingSeconds };
 }
 
-// Get contributors for a specific file path
+// Get contributors for a specific file path using GraphQL
 async function getContributorsForFile(
   owner: string,
   repo: string,
   filePath: string
 ): Promise<Contributor[]> {
   try {
-    // First, get all commits for the file
-    const commitsUrl = new URL(`https://api.github.com/repos/${owner}/${repo}/commits`);
-    commitsUrl.searchParams.set("path", filePath);
-    commitsUrl.searchParams.set("per_page", "100"); // Limit to 100 commits
-    
-    const commitsRes = await fetch(commitsUrl.toString(), {
-      next: { revalidate: 3600 }, // Cache for 1 hour
-      headers: ghHeaders(),
-    });
-
-    if (!commitsRes.ok) {
-      const remaining = commitsRes.headers.get("x-ratelimit-remaining");
-      if (commitsRes.status === 403 && remaining === "0") {
-        throw new Error("GitHub API rate limit hit. Try again later.");
-      }
-      // If file not found, return empty array
-      if (commitsRes.status === 404) {
-        return [];
-      }
-      const body = await commitsRes.text().catch(() => "");
-      throw new Error(`GitHub API ${commitsRes.status}: ${body || commitsRes.statusText}`);
-    }
-
-    const commitsData = await commitsRes.json();
-    
-    // Process commits to extract unique contributors
-    const contributorMap = new Map<number, Contributor>();
-    
-    for (const commit of commitsData) {
-      const author = commit.author;
-      if (!author) continue;
-      
-      if (contributorMap.has(author.id)) {
-        // Update existing contributor
-        const existing = contributorMap.get(author.id)!;
-        existing.contributions += 1;
-        // Update last commit date if this one is more recent
-        if (commit.commit.committer.date > (existing.last_commit_date || '')) {
-          existing.last_commit_date = commit.commit.committer.date;
+    const query = `
+      query($owner: String!, $name: String!, $path: String!, $after: String) {
+        repository(owner: $owner, name: $name) {
+          object(expression: "HEAD") {
+            ... on Commit {
+              history(path: $path, first: 100, after: $after) {
+                pageInfo {
+                  hasNextPage
+                  endCursor
+                }
+                nodes {
+                  author {
+                    user {
+                      id
+                      login
+                      avatarUrl
+                      url
+                    }
+                  }
+                  committedDate
+                }
+              }
+            }
+          }
         }
-      } else {
-        // Add new contributor
-        contributorMap.set(author.id, {
-          id: author.id,
-          login: author.login,
-          avatar_url: author.avatar_url,
-          html_url: author.html_url,
-          type: author.type,
-          contributions: 1,
-          last_commit_date: commit.commit.committer.date,
-        });
+      }
+    `;
+
+    const contributorMap = new Map<string, Contributor>();
+    let hasNextPage = true;
+    let endCursor: string | null = null;
+    const seenLogins = new Set<string>();
+
+    while (hasNextPage) {
+      const variables = {
+        owner,
+        name: repo,
+        path: filePath,
+        after: endCursor || undefined
+      };
+
+      const response = await fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: ghHeaders(),
+        body: JSON.stringify({ query, variables })
+      });
+
+      if (!response.ok) {
+        const remaining = response.headers.get("x-ratelimit-remaining");
+        if (response.status === 403 && remaining === "0") {
+          throw new Error("GitHub API rate limit hit. Try again later.");
+        }
+        // If file not found, return empty array
+        if (response.status === 404) {
+          return [];
+        }
+        const body = await response.text().catch(() => "");
+        throw new Error(`GitHub API ${response.status}: ${body || response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      // Check for GraphQL errors
+      if (data.errors) {
+        const errorMessages = data.errors.map((error: { message: string }) => error.message);
+        throw new Error(`GitHub GraphQL Error: ${errorMessages.join(', ')}`);
+      }
+      
+      const history = data.data?.repository?.object?.history;
+      const commits = history?.nodes || [];
+      const pageInfo = history?.pageInfo || {};
+      
+      // Process commits for this page
+      for (const commit of commits) {
+        const author = commit.author?.user;
+        if (!author || !author.login) continue;  // Skip if no user info
+        
+        const login = author.login.toLowerCase();  // Normalize login to handle case sensitivity
+        
+        if (seenLogins.has(login)) {
+          // Update existing contributor's contribution count
+          const existing = contributorMap.get(login)!;
+          existing.contributions += 1;
+          // Update last commit date if this one is more recent
+          if (commit.committedDate > (existing.last_commit_date || '')) {
+            existing.last_commit_date = commit.committedDate;
+          }
+        } else {
+          // Add new contributor
+          seenLogins.add(login);
+          contributorMap.set(login, {
+            id: author.id ? parseInt(author.id) : Math.floor(Math.random() * 1000000),
+            login: author.login,
+            avatar_url: author.avatarUrl || `https://github.com/${author.login}.png`,
+            html_url: author.url || `https://github.com/${author.login}`,
+            contributions: 1,
+            last_commit_date: commit.committedDate,
+          });
+        }
+      }
+      
+      // Check if there are more pages
+      hasNextPage = pageInfo?.hasNextPage || false;
+      endCursor = pageInfo?.endCursor || null;
+      
+      // If we've processed a lot of commits, break to prevent rate limiting
+      if (contributorMap.size > 100) {
+        console.warn('Processed 100+ contributors, stopping to prevent rate limiting');
+        break;
       }
     }
     
