@@ -166,7 +166,7 @@ async function getContributorsForFile(
         after: endCursor || undefined
       };
 
-      const response = await fetch('https://api.github.com/graphql', {
+      const response: Response = await fetch('https://api.github.com/graphql', {
         method: 'POST',
         headers: ghHeaders(),
         body: JSON.stringify({ query, variables })
@@ -185,7 +185,7 @@ async function getContributorsForFile(
         throw new Error(`GitHub API ${response.status}: ${body || response.statusText}`);
       }
 
-      const data = await response.json();
+      const data: any = await response.json();
       
       // Check for GraphQL errors
       if (data.errors) {
@@ -193,9 +193,9 @@ async function getContributorsForFile(
         throw new Error(`GitHub GraphQL Error: ${errorMessages.join(', ')}`);
       }
       
-      const history = data.data?.repository?.object?.history;
+      const history: any = data.data?.repository?.object?.history;
       const commits = history?.nodes || [];
-      const pageInfo = history?.pageInfo || {};
+      const pageInfo: any = history?.pageInfo || {};
       
       // Process commits for this page
       for (const commit of commits) {
