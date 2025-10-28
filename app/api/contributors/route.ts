@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 // Schema for contributor data
 const ContributorSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   login: z.string(),
   avatar_url: z.string().url(),
   html_url: z.string().url(),
