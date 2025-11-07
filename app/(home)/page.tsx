@@ -27,13 +27,15 @@ export default function Home() {
             About
           </Button>
         </Link>
-        <Button
-          variant="default"
-          size="lg"
-          className="bg-primary text-primary-foreground hover:bg-primary/90"
-        >
-          Explore
-        </Button>
+        <Link href={"/docs/get-started/1-git-and-github"}>
+          <Button
+            variant="default"
+            size="lg"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            Explore
+          </Button>
+        </Link>
       </div>
     </div>
   );
